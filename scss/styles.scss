@@ -350,7 +350,7 @@ footer {
     height: 100vh;
     min-height: 500px;
     max-height: 1080px;
-    background: url(../images/lead-bg.jpg);
+    background: url(../images/abstract-neural-network-background_sf_y0vffl_thumbnail-full03.png);
     background-size: cover;
     padding: 15px;
     overflow: hidden;
@@ -374,7 +374,7 @@ footer {
         font-size: 5em;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        line-height: 0.9em;
+        line-height: 1.5em;
     }
 
     h2 {
@@ -383,6 +383,12 @@ footer {
         font-size: 2.25em;
         margin-bottom: 15px;
     }
+}
+
+#lead-image {
+    position: relative;
+    top: -20px;
+    border:1px solid #021a40;
 }
 
 #lead-overlay {
@@ -610,7 +616,7 @@ footer {
         color: $text;
         clear: both;
         font-weight: 500;
-        margin: 0 0 15px 0;
+        margin: 0 0 5px 0;
     }
 
     p, ul {
