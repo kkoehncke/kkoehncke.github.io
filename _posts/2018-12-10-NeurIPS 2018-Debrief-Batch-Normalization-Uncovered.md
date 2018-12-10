@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "NeurIPS 2018 De-Brief: Batch Normalization Uncovered"
-author: "Kevin Koehncke"
+title: NeurIPS 2018 De-Brief: Batch Normalization Uncovered
+author: Kevin Koehncke
 math: true
 ---
 
