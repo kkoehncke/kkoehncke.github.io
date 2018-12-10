@@ -2,7 +2,9 @@
 layout: post
 title: NeurIPS 2018 De-Brief: Batch Normalization Uncovered
 author: Kevin Koehncke
+math: true
 ---
+
 # NeurIPS 2018 De-Brief: Batch Normalization Uncovered
 
 I was one of the lucky few that managed to get a NeurIPS ticket last minute off the waitlist and was excited to hear about the latest findings in ML research. Amidst the frigid Montreal weather, I saw some groundbreaking research regarding batch normalization that made a lot of researchers (and myself) re-think the reason for using batch normalization within their network architectures. 
