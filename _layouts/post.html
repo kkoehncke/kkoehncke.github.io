@@ -9,7 +9,9 @@ layout: blog
   <div class="entry">
     {{ content }}
   </div>
-
+  {% if page.use_math %}
+      {% include mathjax_support.html %}
+  {% endif %}
   {% include disqus.html %}
 </article>
 
