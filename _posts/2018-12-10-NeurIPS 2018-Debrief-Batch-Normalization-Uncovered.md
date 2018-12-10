@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "NeurIPS 2018 De-Brief Batch Normalization Uncovered"
+title: NeurIPS 2018 De-Brief Batch Normalization Uncovered
 author: Kevin Koehncke
 use_math: true
 ---
@@ -11,11 +11,11 @@ I was one of the lucky few that managed to get a NeurIPS ticket last minute off 
 
 ## What is Batch Normalization?
 
-For people who do not know what batch normalization is, batch normalization (BN) is a technique used with mini-batch training to normalize activation values in neural network layers by taking the output of the previous activation layer and zero-centering the batch mean and forcing unit batch variance via <cite>[1]</cite>:
+For people who do not know what batch normalization is, batch normalization (BN) is a technique used with mini-batch training to normalize activation values in neural network layers by taking the output of the previous activation layer and zero-centering the batch mean and forcing unit batch variance via *[1]*:
 
 ![img](https://cdn-images-1.medium.com/max/1600/1*Hiq-rLFGDpESpr8QNsJ1jg.png)
 
-where two new trainable parameters $\gamma$ and $\beta$ are introduced that scale and shift the output via a linear transformation; we note that for an arbitrary loss $L$, our backpropagation of our gradients with respect to our six new variables are continous \& differentiable, thus allowing $\gamma$ and $\beta$ to be learned via an optimization method such as SGD. 
+where two new trainable parameters $$\gamma$$ and $$\beta$$ are introduced that scale and shift the output via a linear transformation; we note that for an arbitrary loss $L$, our backpropagation of our gradients with respect to our six new variables are continous \& differentiable, thus allowing $$\gamma$$ and $$\beta$$ to be learned via an optimization method such as SGD. 
 
 
 
