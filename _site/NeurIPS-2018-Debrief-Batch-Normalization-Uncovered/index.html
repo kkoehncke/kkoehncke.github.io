@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Neurips 2018 Debrief Batch Normalization Uncovered – Kevin Koehncke – Master's Student at Georgia Tech</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="I was one of the lucky few that managed to get a NeurIPS ticket last minute off the waitlist and was excited to hear about the latest findings in ML research. Amidst the frigid Montreal weather, I saw some groundbreaking research regarding batch normalization that made a lot of researchers (and myself) re-think the reason for using batch normalization within their network architectures.
+
+" />
+    <meta property="og:description" content="I was one of the lucky few that managed to get a NeurIPS ticket last minute off the waitlist and was excited to hear about the latest findings in ML research. Amidst the frigid Montreal weather, I saw some groundbreaking research regarding batch normalization that made a lot of researchers (and myself) re-think the reason for using batch normalization within their network architectures.
+
+" />
+    
+    <meta name="author" content="Kevin Koehncke" />
+
+    
+    <meta property="og:title" content="Neurips 2018 Debrief Batch Normalization Uncovered" />
+    <meta property="twitter:title" content="Neurips 2018 Debrief Batch Normalization Uncovered" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="alternate" type="application/rss+xml" title="Kevin Koehncke - Master's Student at Georgia Tech" href="/feed.xml" />
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+  </head>
+
+  <body>
+    
+    
+    <div class="intro-header">    
+      <div class="container">
+        <div class="post-heading">
+            <h1>Neurips 2018 Debrief Batch Normalization Uncovered</h1>
+            <span class="meta">Posted by <a href="/about"> Kevin Koehncke
+            </a> on December 10, 2018
+            <a href="/"> { Return to Blog }</a>
+            </span>
+        </div>
+            
+      </div>
+    </div>
+    
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+ <div class="space-extra-small">
+ </div>
+
+  <div class="entry">
+    <p>I was one of the lucky few that managed to get a NeurIPS ticket last minute off the waitlist and was excited to hear about the latest findings in ML research. Amidst the frigid Montreal weather, I saw some groundbreaking research regarding batch normalization that made a lot of researchers (and myself) re-think the reason for using batch normalization within their network architectures.</p>
+
+<h2 id="what-is-batch-normalization">What is Batch Normalization?</h2>
+
+<p>For people who do not know what batch normalization is, batch normalization (BN) is a technique used with mini-batch training to normalize activation values in neural network layers by taking the output of the previous activation layer and zero-centering the batch mean and forcing unit batch variance via <em>[<a href="https://arxiv.org/pdf/1502.03167v3.pdf" title="Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift ">1</a>]</em>:</p>
+
+<p><img src="https://cdn-images-1.medium.com/max/1600/1*Hiq-rLFGDpESpr8QNsJ1jg.png" alt="img" /></p>
+
+<p>where two new trainable parameters <script type="math/tex">\gamma</script> and <script type="math/tex">\beta</script> are introduced that scale and shift the output via a linear transformation; we note that for an arbitrary loss <script type="math/tex">\mathcal{L}</script>, our backpropagation of our gradients with respect to our six new variables are continous &amp; differentiable, thus allowing <script type="math/tex">\gamma</script> and <script type="math/tex">\beta</script> to be learned via an optimization method such as SGD.</p>
+
+<p>The purpose of BN, as proposed in the original paper by Sergey Ioffe &amp; Christian Szedegy <em>[<a href="https://arxiv.org/pdf/1502.03167v3.pdf" title="Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift ">1</a>]</em> is the following:</p>
+
+<p>When feeding outputs in one activation layer to a subsequent layer, their distributions vary during training. With varying distributions, gradient descent has a hard time finding the minima of our proposed optimization problem when each layer does not have uniform scale as gradient descent is not scale invariant. This causes our learned parameters to change from the previous layer, creating inconsistencies, and causing the need for lower learning rates to be chosen &amp; careful weight initialization in order to create a well-conditioned environment for our model to be trained; we denote this change in the input layers’ distribution as <em>internal covariate shift</em> (ICS). Hence, utilizing BN reduces ICS by creating a uniform scale of our input distributions.</p>
+
+<p>Ioffe &amp; Szedegy also state that higher learning rates can be used in conjunction with BN due to the normalization of distributions across the network, causing vanishing and exploding gradients to be less likely and prevents getting stuck in local minima during training. Backpropagation gains more resilience as well, with the layer Jacobian and progagated gradients being more closer to scale invariant with respect to the weights calculated than before.</p>
+
+<h2 id="neurips-findings">NeurIPS Findings</h2>
+
+<p>Even with Ioffe &amp; &amp; Szedegy’s explanation, there is still a lot of unknown as to what governs the behavior behind BN during training. Johan Bjorck, Carla Gomes, Bart Selman, and Kilian Q. Weinberger sought to explain experimentally BN’s behavior on training <em>[<a href="http://papers.nips.cc/paper/7996-understanding-batch-normalization.pdf" title="Understanding Batch Normalization">3</a>]</em>. In their first experiment, they trained a 110-layer ResNet on CIFAR-10 with three different learning rates <script type="math/tex">0.0001, 0.003, 0.1</script> with and without BN:</p>
+
+<p><img src="/Users/kkoehncke/Library/Application Support/typora-user-images/image-20181206190540218.png" alt="image-20181206190540218" /></p>
+
+<p>They observed that with the smallest learning rate, BN provided a small boost in training speed but both models converged to the same test accuracy, whilst the higher learning rates benefited greatly from BN, allowing for faster training without compromising test accuracy and adds regularization. Bjorck et al. attribute this to the larger learning rates generate more SGD “noise” which in turn creates a regularization effect and prevents getting stuck in sharp minima, supported by Keskar et al 2017 findings <em>[<a href="https://arxiv.org/pdf/1609.04836.pdf" title="On Large Batch Training For Deep Learning: Generalization Gap and Sharp Minima">4</a>]</em>.</p>
+
+<p>But why does using BN allow for higher learning rates? Bjorck et al. observe the relative loss during the first few mini-batches as a function of the step size:</p>
+
+<p><img src="/Users/kkoehncke/Library/Application Support/typora-user-images/image-20181206192910717.png" alt="image-20181206192910717" /></p>
+
+<p>We observe that networks utilizing BN do not diverge as rapidly as networks without BN with respect to step size. Is this due to the fact that we reduce ICS or some other phenomena?</p>
+
+<p>Santurkar et al. argue that their is a greater effect at play with using BN: we are smoothing our optimization landscape such that we create a further well-conditioned optimization problem that aids SGD in finding a solution. Due to creating approximately scale invariance from activation layer to activation layer, BN allows spikes and bumps in our non-convex loss function to be smoothed, thus allowing for a larger learning rate and more predictive gradients to be computed <em>[<a href="http://papers.nips.cc/paper/7996-understanding-batch-normalization.pdf" title="Understanding Batch Normalization">3</a>]</em>.  In order to measure this smoothing effect, Santurkar et al. propose the following definition:</p>
+
+<p><img src="/Users/kkoehncke/Library/Application Support/typora-user-images/image-20181206203035163.png" alt="image-20181206203035163" /></p>
+
+<p>To my knowledge, this is the first proposed mathematical definition ICS, namely calculating the <script type="math/tex">l_2</script> distance between the sum of all gradients of <script type="math/tex">\mathcal{L}</script> with respect to our parameters <script type="math/tex">W_{k}^t</script>  where <script type="math/tex">G_{t,i}</script> corresponds to the gradients before the layer weight update and <script type="math/tex">G_{t, i}^{'}</script> responds to the gradients after the layer weight update. In their paper, they go on to prove theoretically that BN provides a more well-behaved optimization problem by inducing favorable properties such as Lipschitz continuity and increased predictive gradients <em>[<a href="http://papers.nips.cc/paper/7996-understanding-batch-normalization.pdf" title="Understanding Batch Normalization">3</a>]</em>.</p>
+
+<p>Recall that for an arbitrary function <script type="math/tex">f</script>, we say <script type="math/tex">f</script> is L-Lipschitz if <script type="math/tex">\vert f(x_1) - f(x_2) \vert \leq L \vert \vert f(x_1) - f(x_2) \vert \vert</script> for all <script type="math/tex">x_1</script> and <script type="math/tex">x_2</script>  and for some constants <script type="math/tex">L</script>. Intuitively, Lipschitz continuity ensures that your function does not explode at some point. We can extend this notion of reduction of explosion to the gradients of <script type="math/tex">f</script> via <script type="math/tex">\beta</script>-smoothness where we say <script type="math/tex">f</script> is <script type="math/tex">\beta</script>-smooth if its gradients are <script type="math/tex">\beta</script>-Lipschitz i.e. if <script type="math/tex">\|\nabla f(x_1)-\nabla f(x_2) \| \leq \beta \|x_1 - x_2 \|</script> for some constant <script type="math/tex">\beta</script>.</p>
+
+<p>Experimentally, Santurkar et al. used the VGG network on CIFAR-10 with &amp; without BN, calculated the <script type="math/tex">l_2</script> distance between the loss weight gradients <script type="math/tex">\vert\vert G_{t,i} - G_{t,i}^{'}\vert\vert_2</script>  and found the following during training:</p>
+
+<p><img src="/Users/kkoehncke/Library/Application Support/typora-user-images/image-20181206205110393.png" alt="image-20181206205110393" /></p>
+
+<p>where (a) corresponds to the variation in loss function’s value, (b) is the <script type="math/tex">l_2</script> disance of <script type="math/tex">G</script>, and (c) the maximum <script type="math/tex">l_2</script> over distance moved in that direction, which we define as “effective” <script type="math/tex">\beta</script>-smoothness <em>[<a href="http://papers.nips.cc/paper/7996-understanding-batch-normalization.pdf" title="Understanding Batch Normalization">3</a>]</em>. We immediately see that the addition of BN generates a smoother loss landscape by drastically reducing the fluctuations in gradient predictiveness via the created <script type="math/tex">\beta</script>-smoothing effect on <script type="math/tex">\mathcal{L}</script>.</p>
+
+<p>Furthermore, Santurkar et al. devised a clever experiment to examine whether ICS had anything to do with increased training performance. They trained three VGG networks on CIFAR-10: one without BN, one with BN, and one with BN where the activation, after passing the BN layer, was perturbed via i.i.d noise sampled from a time-step dependent, non-zero mean and non-unit variance distribution <script type="math/tex">D_j^{t}</script> for each activation <script type="math/tex">j</script> for each sample in each batch. This pertubation produces a severe covariate shift that is non-uniform across all activations that would induce a decrease in training performance. However, they observe that even though less stable distributions are produced with the noisy pertubation, training performance is not impacted:</p>
+
+<p><img src="/Users/kkoehncke/Library/Application Support/typora-user-images/image-20181207121959940.png" alt="image-20181207121959940" /></p>
+
+<h2 id="conclusions">Conclusions</h2>
+
+<p>We see that batch normalization’s connection to training performance and internal covariate shift is weak at best. Rather, we see that batch normalization provides another method for smoothing our optimization landscape to be more stable, thus allowing for higher learning rates to be used which in turn improves training performance. This explains the known benefits of batch normalization such as prevention of exploding / vanishing gradients and robustness to hyperparameter selection.</p>
+
+
+  </div>
+  
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script>
+        MathJax.Hub.Config({
+            config: ["MMLorHTML.js"],
+            extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+            jax: ["input/TeX"],
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: false
+            },
+            TeX: {
+                TagSide: "right",
+                TagIndent: ".8em",
+                MultLineWidth: "85%",
+                equationNumbers: {
+                   autoNumber: "AMS",
+                },
+                unicode: {
+                   fonts: "STIXGeneral,'Arial Unicode MS'"
+                }
+            },
+            showProcessingMessages: false
+        });
+</script>
+  
+  
+</article>
+
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+            <div class="svg-icon">
+          
+<a href="mailto:kkoehncke@gmail.com"><i class="icon-envelope icon-2x"></i></a>
+
+
+<a href="https://github.com/kkoehncke"><i class="icon-github icon-2x"></i></a>
+
+<a href="https://www.linkedin.com/in/kkoehncke"><i class="icon-linkedin-sign icon-2x"></i></a>
+
+
+
+
+
+
+
+            </div>
+        </footer>
+      </div>
+    </div>
+
+
+    
+
+  </body>
+</html>
