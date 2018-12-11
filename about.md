@@ -20,6 +20,7 @@ All opinions contained within this website are my own. The views and opinions re
 * Python
 * Keras
 * TensorFlow
+* OpenCV
 * Machine Learning
 * Data Science
 * Scikit Learn
