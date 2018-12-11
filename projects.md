@@ -4,29 +4,29 @@ title: Projects
 permalink: /projects/
 ---
 
-### [Project 1](https://github.com/tux4kids/tuxmania) 
-Proin pellentesque malesuada mauris, quis aliquam augue vestibulum ac. Vestibulum ut feugiat nibh. Sed faucibus felis purus, sed convallis leo dictum vehicula.
+### [Pneunomia Classification](https://github.com/kkoehncke/Pneumonia_Classification) 
+Applied transfer learning to diagnosing pneumonia in X-Rays with Keras, using insights from the Network In Network paper *[[1]]*
 
+[1]: https://arxiv.org/pdf/1312.4400.pdf
 ***
 
-### [Project 2](https://github.com/AkshayAgarwal007/Moodly)
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet urna eu dolor placerat varius. Vivamus eros augue, consequat id scelerisque nec, fringilla in est. Proin pellentesque malesuada mauris, quis aliquam augue vestibulum ac. Vestibulum ut feugiat nibh. Sed faucibus felis purus, sed convallis leo dictum vehicula.
+### [Tensorboard For Beginners](https://medium.com/@kkoehncke/tensorboard-for-beginners-c4709998628b)
 
-Proin pellentesque malesuada mauris, quis aliquam augue vestibulum ac. Vestibulum ut feugiat nibh. Sed faucibus felis purus, sed convallis leo dictum vehicula.
+Beginner guide to using TensorBoard and TensorFlow via predicting housing prices with linear regression. 
 
 ***
 
 ## Other Projects
 
-### This Could Be Another Project Name
+### Digit Detection and Classification in Natural Scene
 
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet urna eu dolor placerat varius. Vivamus eros augue, consequat id scelerisque nec, fringilla in est. Proin pellentesque malesuada mauris, quis aliquam augue vestibulum ac. Vestibulum ut feugiat nibh. Sed faucibus felis purus, sed convallis leo dictum vehicula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet urna eu dolor placerat varius. Vivamus eros augue, consequat id scelerisque nec, fringilla in est. Proin pellentesque malesuada mauris, quis aliquam augue vestibulum ac. Vestibulum ut feugiat nibh. Sed faucibus felis purus, sed convallis leo dictum vehicula.
+Created end to end pipeline for finding and classifying digits within a natural image scene. Utilized a combination of sliding window, Gaussian pyramid, HoG descriptors, SVM, and
+non-maximal suppression for detecting digits. Used VGG16 and custom CNN architecture for classification. Implemented using Python, OpenCV, and TensorFlow.
    
-### This Could Be Yet Another Project Name
+### OpenAI Lunar Lander
 
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet urna eu dolor placerat varius. Vivamus eros augue, consequat id scelerisque nec, fringilla in est. Proin pellentesque malesuada mauris, quis aliquam augue vestibulum ac. Vestibulum ut feugiat nibh. Sed faucibus felis purus, sed convallis leo dictum vehicula.
-
+Implemented Google DeepMind reinforcement learning algorithm to train an OpenAI Lunar Lander agent to consistently land successfully using Keras
 
 ## Contact me
 
-[agarwal.akshay.akshay8@gmail.com](mailto:agarwal.akshay.akshay8@gmail.com)
+[kkoehncke@gmail.com](mailto:kkoehncke@gmail.com)

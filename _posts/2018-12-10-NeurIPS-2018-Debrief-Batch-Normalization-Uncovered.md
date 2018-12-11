@@ -31,7 +31,7 @@ Ioffe & Szedegy also state that higher learning rates can be used in conjunction
 
 Even with Ioffe & & Szedegy's explanation, there is still a lot of unknown as to what governs the behavior behind BN during training. Johan Bjorck, Carla Gomes, Bart Selman, and Kilian Q. Weinberger sought to explain experimentally BN's behavior on training *[[3]]*. In their first experiment, they trained a 110-layer ResNet on CIFAR-10 with three different learning rates $$0.0001, 0.003, 0.1$$ with and without BN:
 
-![image-20181206190540218](/Users/kkoehncke/Library/Application Support/typora-user-images/image-20181206190540218.png)
+![image-1](../images/NeurIPS_2018/image-1.png)
 
 They observed that with the smallest learning rate, BN provided a small boost in training speed but both models converged to the same test accuracy, whilst the higher learning rates benefited greatly from BN, allowing for faster training without compromising test accuracy and adds regularization. Bjorck et al. attribute this to the larger learning rates generate more SGD "noise" which in turn creates a regularization effect and prevents getting stuck in sharp minima, supported by Keskar et al 2017 findings *[[4]]*. 
 
@@ -39,13 +39,13 @@ They observed that with the smallest learning rate, BN provided a small boost in
 
 But why does using BN allow for higher learning rates? Bjorck et al. observe the relative loss during the first few mini-batches as a function of the step size:
 
-![image-20181206192910717](/Users/kkoehncke/Library/Application Support/typora-user-images/image-20181206192910717.png)
+![image-2](../images/NeurIPS_2018/image-2.png)
 
 We observe that networks utilizing BN do not diverge as rapidly as networks without BN with respect to step size. Is this due to the fact that we reduce ICS or some other phenomena? 
 
 Santurkar et al. argue that their is a greater effect at play with using BN: we are smoothing our optimization landscape such that we create a further well-conditioned optimization problem that aids SGD in finding a solution. Due to creating approximately scale invariance from activation layer to activation layer, BN allows spikes and bumps in our non-convex loss function to be smoothed, thus allowing for a larger learning rate and more predictive gradients to be computed *[[3]]*.  In order to measure this smoothing effect, Santurkar et al. propose the following definition: 
 
-![image-20181206203035163](/Users/kkoehncke/Library/Application Support/typora-user-images/image-20181206203035163.png)
+![image-3](../images/NeurIPS_2018/image-3.png)
 
 To my knowledge, this is the first proposed mathematical definition ICS, namely calculating the $$l_2$$ distance between the sum of all gradients of $$\mathcal{L}$$ with respect to our parameters $$W_{k}^t$$  where $$G_{t,i}$$ corresponds to the gradients before the layer weight update and $$G_{t, i}^{'}$$ responds to the gradients after the layer weight update. In their paper, they go on to prove theoretically that BN provides a more well-behaved optimization problem by inducing favorable properties such as Lipschitz continuity and increased predictive gradients *[[3]]*. 
 
@@ -53,13 +53,13 @@ Recall that for an arbitrary function $$f$$, we say $$f$$ is L-Lipschitz if $$\v
 
 Experimentally, Santurkar et al. used the VGG network on CIFAR-10 with & without BN, calculated the $$l_2$$ distance between the loss weight gradients $$ \vert\vert G_{t,i} - G_{t,i}^{'}\vert\vert_2$$  and found the following during training:
 
-![image-20181206205110393](/Users/kkoehncke/Library/Application Support/typora-user-images/image-20181206205110393.png)
+![image-4](../images/NeurIPS_2018/image-4.png)
 
 where (a) corresponds to the variation in loss function's value, (b) is the $$l_2$$ disance of $$G$$, and (c) the maximum $$l_2$$ over distance moved in that direction, which we define as "effective" $$\beta$$-smoothness *[[3]]*. We immediately see that the addition of BN generates a smoother loss landscape by drastically reducing the fluctuations in gradient predictiveness via the created $$\beta$$-smoothing effect on $$\mathcal{L}$$. 
 
 Furthermore, Santurkar et al. devised a clever experiment to examine whether ICS had anything to do with increased training performance. They trained three VGG networks on CIFAR-10: one without BN, one with BN, and one with BN where the activation, after passing the BN layer, was perturbed via i.i.d noise sampled from a time-step dependent, non-zero mean and non-unit variance distribution $$D_j^{t}$$ for each activation $$j$$ for each sample in each batch. This pertubation produces a severe covariate shift that is non-uniform across all activations that would induce a decrease in training performance. However, they observe that even though less stable distributions are produced with the noisy pertubation, training performance is not impacted:
 
-![image-20181207121959940](/Users/kkoehncke/Library/Application Support/typora-user-images/image-20181207121959940.png)
+![image-5](../images/NeurIPS_2018/image-5.png)
 
 ## Conclusions
 
